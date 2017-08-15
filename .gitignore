@@ -1,0 +1,30 @@
+syntax: glob
+
+# OSX
+.DS_Store
+
+# Misc
+*.log
+*.log.?
+*.orig
+*.bak
+*.class
+*~
+*.old
+
+# IDEA
+*.iml
+*.iws
+*.ipr
+./idea
+.idea/
+
+# Java
+out/
+target/
+classes/
+
+# Bundler
+.bundle/
+
+.gradle/
