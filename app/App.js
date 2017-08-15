@@ -1,23 +1,22 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, NavigatorIOS } from 'react-native';
+import SearchPage from './SearchPage';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-    );
-  }
+export default class Formula1 extends React.Component {
+    render() {
+        return (
+            <NavigatorIOS
+                style={styles.container}
+                initialRoute={{
+                    title: 'Formula 1',
+                    component: SearchPage,
+                }}/>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
