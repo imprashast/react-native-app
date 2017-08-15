@@ -43,19 +43,23 @@ export default class SearchPage extends React.Component {
         });
     };
 
+    _onSearchTextChanged = (event) => {
+        this.setState({ searchString: event.nativeEvent.text });
+    };
+
     render() {
         const spinner = this.state.isLoading ?
             <ActivityIndicator size='large'/> : null;
         return (
             <View style={styles.container}>
-                <Text style={styles.description}>This is a demo app!</Text>
-                <Text>This is a demo app</Text>
+                <Image source={require('./images/logo.png')} style={styles.image}/>
+                <Text style={styles.description}>Race Calender Search:</Text>
                 <View style={styles.flowRight}>
                     <TextInput
                         style={styles.searchInput}
                         value={this.state.searchString}
                         onChange={this._onSearchTextChanged}
-                        placeholder='Search for Drivers'/>
+                        placeholder='Search for Races'/>
                     <Button
                         onPress={this._onSearchPressed}
                         color='#48BBEC'
@@ -63,7 +67,7 @@ export default class SearchPage extends React.Component {
                     />
                 </View>
                 <Text style={styles.description}>{this.state.message}</Text>
-                <Image source={require('./images/logo.png')} style={styles.image}/>
+
                 {spinner}
             </View>
         );
@@ -80,7 +84,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
         color: '#656565',
-        marginTop: 65,
+        marginTop: 5,
     },
     searchInput: {
         height: 36,
@@ -97,9 +101,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         alignSelf: 'stretch',
+        marginTop: 5,
     },
     image: {
         width: 214,
         height: 100,
+        marginTop: 65,
     },
 });
