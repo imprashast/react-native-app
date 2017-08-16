@@ -7,17 +7,20 @@ import {
     FlatList,
     Text,
 } from 'react-native';
+import RaceResults from './RaceResults';
 
 class ListItem extends React.PureComponent {
-    _onPress = () => {
-        this.props.onPressItem(this.props.index);
+
+    _onPress = (e, getUrl) => {
+        this.props.onPressItem(getUrl);
     }
 
     render() {
         const item = this.props.item;
+        const getURL = 'http://ergast.com/api/f1/'+item.season+'/'+item.round+'/results.json';
         return (
             <TouchableHighlight
-                onPress={this._onPress}
+                onPress={(e) => this._onPress(e,getURL)}
                 underlayColor='#dddddd'>
                 <View>
                     <View style={styles.rowContainer}>
@@ -35,6 +38,14 @@ class ListItem extends React.PureComponent {
 }
 
 export default class SearchResults extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: false
+        };
+    }
+
     _keyExtractor = (item, index) => index;
 
     _renderItem = ({item, index}) => (
@@ -45,8 +56,28 @@ export default class SearchResults extends Component {
         />
     );
 
+    _executeQuery = (query) => {
+        console.log(query);
+        fetch(query)
+            .then(response => response.json())
+            .then(json => this._handleResponse(json))
+            .catch(error => {
+                console.log('Something bad happened ' + error);
+            });
+    };
+
     _onPressItem = (index) => {
         console.log("Pressed row: "+index);
+        this._executeQuery(index);
+    };
+
+    _handleResponse = (response) => {
+        this.setState({ isLoading: false , message: '' });
+        this.props.navigator.push({
+            title: 'Race Results',
+            component: RaceResults,
+            passProps: {results: response.MRData.RaceTable.Races[0].Results}
+        });
     };
 
     render() {
