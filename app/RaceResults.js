@@ -81,10 +81,27 @@ export default class RaceResults extends Component {
     };
 
     _onPressImage = (index) => {
+
+        this._executeQuery('http://ergast.com/api/f1/drivers/'+index+'.json');
+
+    };
+
+    _executeQuery = (query) => {
+        console.log(query);
+        fetch(query)
+            .then(response => response.json())
+            .then(json => this._handleResponse(json))
+            .catch(error => {
+                console.log('Something bad happened ' + error);
+            });
+    };
+
+    _handleResponse = (response) => {
+        this.setState({ isLoading: false , message: '' });
         this.props.navigator.push({
-            title: 'Image',
+            title: 'Driver Details',
             component: FullImage,
-            passProps: {driver: index}
+            passProps: {driver: response.MRData.DriverTable.Drivers[0].driverId , data: response.MRData.DriverTable.Drivers[0] }
         });
     };
 

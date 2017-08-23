@@ -12,8 +12,23 @@ export default class SearchPage extends React.Component {
         super(props);
         this.state = {
             searchString: '2017',
-            isLoading: false
+            isLoading: false,
+            nextRace: '',
         };
+    }
+
+    componentDidMount() {
+        this.setState({ isLoading: true });
+        fetch('http://ergast.com/api/f1/current/next.json')
+            .then(response => response.json())
+            .then(json => {
+                this.setState({nextRace: json.MRData.RaceTable.Races[0], isLoading: false});
+            })
+            .catch(error =>
+                this.setState({
+                    isLoading: false,
+                    message: 'Something bad happened ' + error
+                }));
     }
 
     _executeQuery = (query) => {
@@ -67,8 +82,11 @@ export default class SearchPage extends React.Component {
                     />
                 </View>
                 <Text style={styles.description}>{this.state.message}</Text>
-
                 {spinner}
+                <View>
+                    <Text style={styles.name}>Upcoming Race</Text>
+                    <Text style={styles.description}>{this.state.nextRace.raceName} </Text>
+                </View>
             </View>
         );
     }
@@ -107,5 +125,10 @@ const styles = StyleSheet.create({
         width: 214,
         height: 100,
         marginTop: 65,
+    },
+    name: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: '#48BBEC'
     },
 });
